@@ -21,6 +21,170 @@ STEP 5: Remove outliers using IQR
 STEP 6: Use zscore of to remove outliers
 
 # Coding and Output
-            <<include your coding and its corressponding output screen shots here>>
+
+
+# Data_set.csv
+
+
+
+```
+
+import pandas as pd
+
+df = pd.read_csv("Data_set.csv")
+
+print("Missing values before cleaning:")
+print(df.isnull().sum())
+
+categorical_cols = ["show_name", "aired_on", "original_network"]
+
+for col in categorical_cols:
+    df[col] = df[col].fillna("Unknown")
+
+numeric_cols = ["rating", "current_overall_rank", "watchers"]
+
+for col in numeric_cols:
+    df[col] = df[col].fillna(df[col].median())
+
+df["current_overall_rank"] = df["current_overall_rank"].round().astype("Int64")
+
+print("\nMissing values after cleaning:")
+print(df.isnull().sum())
+
+df.to_csv("Data_set_cleaned.csv", index=False)
+
+print("\nCleaned dataset saved successfully!")
+
+
+```
+   <img width="636" height="533" alt="image" src="https://github.com/user-attachments/assets/04aeff9b-6feb-4116-9116-67f81e94f28f" />
+
+
+
+ # SAMPLEIDS.csv
+
+
+
+
+```
+
+import pandas as pd
+
+df = pd.read_csv("SAMPLEIDS.csv")
+
+df = df.drop_duplicates()
+
+print("Missing values:")
+print(df.isnull().sum())
+
+print("Duplicate registration numbers:")
+print(df[df.duplicated("REGNO", keep=False)])
+
+marks = ["M1", "M2", "M3", "M4"]
+
+print("Inconsistent total marks:")
+print(df[df["TOTAL"] != df[marks].sum(axis=1, min_count=4)])
+
+df.to_csv("SAMPLEIDS_cleaned.csv", index=False)
+
+print("Cleaning completed!")
+
+```
+<img width="665" height="660" alt="image" src="https://github.com/user-attachments/assets/fd683835-bbcc-4c97-ae59-1afc87df4ff3" />
+
+
+# heights.csv
+
+
+
+```
+
+import pandas as pd
+
+df = pd.read_csv("heights.csv")
+
+Q1 = df["height"].quantile(0.25)
+Q3 = df["height"].quantile(0.75)
+
+IQR = Q3 - Q1
+
+lower = Q1 - 1.5 * IQR
+upper = Q3 + 1.5 * IQR
+
+outliers = df[(df["height"] < lower) | (df["height"] > upper)]
+
+print("Unusual height measurements:")
+print(outliers)
+
+```
+<img width="241" height="76" alt="image" src="https://github.com/user-attachments/assets/3dcf7bee-203f-46c1-bf50-f84488843e11" />
+
+
+# iris.csv
+
+
+
+
+```
+
+import pandas as pd
+
+df = pd.read_csv("iris.csv")
+
+cols = df.select_dtypes(include="number").columns
+
+for col in cols:
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+
+    outliers = df[(df[col] < Q1 - 1.5 * IQR) |
+                  (df[col] > Q3 + 1.5 * IQR)]
+
+    print("IQR outliers in", col)
+    print(outliers[col])
+
+for col in cols:
+    z = (df[col] - df[col].mean()) / df[col].std()
+
+    print("Z-score outliers in", col)
+    print(df.loc[z.abs() > 3, col])
+```
+<img width="385" height="357" alt="image" src="https://github.com/user-attachments/assets/57983c9d-017f-4088-a873-7727c3fec49b" />
+
+
+
+# Loan_data.csv
+
+
+
+
+```
+
+import pandas as pd
+
+df = pd.read_csv("Loan_data.csv")
+
+num_cols = df.select_dtypes(include="number").columns
+
+for col in num_cols:
+    df[col] = df[col].fillna(df[col].median())
+
+cat_cols = df.select_dtypes(include="object").columns
+
+for col in cat_cols:
+    if df[col].isnull().any():
+        df[col] = df[col].fillna(df[col].mode()[0])
+
+df = df.drop_duplicates()
+
+print(df.isnull().sum())
+
+df.to_csv("Loan_data_cleaned.csv", index=False)
+
+print("Data cleaning completed!")
+
+```
+<img width="208" height="247" alt="image" src="https://github.com/user-attachments/assets/a5d30fd6-c6ea-4068-a3e3-5fecac857169" />
+
 # Result
-          <<include your Result here>>
