@@ -187,4 +187,14 @@ print("Data cleaning completed!")
 ```
 <img width="208" height="247" alt="image" src="https://github.com/user-attachments/assets/a5d30fd6-c6ea-4068-a3e3-5fecac857169" />
 
+# interpretation:
+
+      Thus, the data cleaning process was successfully performed by reading the datasets, 
+      analyzing their information, handling missing values, removing duplicate records,
+      and identifying outliers using the IQR and Z-score methods. The cleaned datasets were 
+      saved into separate CSV files, making the data more accurate, consistent, and suitable 
+      for further analysis.
+      
 # Result
+          Thus we have cleaned the data and removed the outliers by detection using IQR and Z-score
+
